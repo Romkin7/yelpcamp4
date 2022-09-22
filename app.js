@@ -6,6 +6,7 @@ if (process.env.NODE_ENV !== "production") {
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
+const MongoClient = require('mongodb').MongoClient;
 const ejsMate = require('ejs-mate');
 const session = require('express-session');
 const flash = require('connect-flash');
@@ -25,8 +26,13 @@ const campgroundRoutes = require('./routes/campgrounds');
 const reviewRoutes = require('./routes/reviews');
 
 const MongoDBStore = require("connect-mongodb-session") (session);
-console.log(MongoDBStore);
+
 const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/yelp-camp1";
+console.log(dbUrl);
+MongoClient.connect(dbUrl, function (err, db) {
+     if(err) throw err;   
+  // Use this space to pass MongoDB CRUD code here             
+});
 
 mongoose.connect(dbUrl, {
     useNewUrlParser: true,
@@ -55,7 +61,7 @@ app.use(mongoSanitize({
 const secret = process.env.SECRET || 'thisshouldbeabettersecret!';
 
 const store = new MongoDBStore ({
-    url:dbUrl,
+    uri:dbUrl,
     secret,
     touchAfter: 24 * 60 * 60
 });
