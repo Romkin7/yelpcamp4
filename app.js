@@ -6,8 +6,6 @@ if (process.env.NODE_ENV !== "production") {
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
-const MongoStore = require ("connect-mongodb-session");
-const MongoClient = require('mongodb').MongoClient;
 const ejsMate = require('ejs-mate');
 const session = require('express-session');
 const flash = require('connect-flash');
@@ -29,7 +27,6 @@ const reviewRoutes = require('./routes/reviews');
 const MongoDBStore = require("connect-mongodb-session") (session);
 
 const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/yelp-camp1";
-console.log(dbUrl);
 
 mongoose.connect(dbUrl, {
     useNewUrlParser: true,
@@ -62,6 +59,8 @@ const store = new MongoDBStore ({
     secret,
     touchAfter: 24 * 60 * 60
 });
+
+console.log(dbUrl, store);
 
 store.on ("error", function (e) {
     console.log ("SESSION STORE ERROR", e)
