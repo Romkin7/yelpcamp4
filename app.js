@@ -24,8 +24,8 @@ const userRoutes = require('./routes/users');
 const campgroundRoutes = require('./routes/campgrounds');
 const reviewRoutes = require('./routes/reviews');
 
-const MongoDBStore = require("connect-mongodb-session");
-
+const MongoDBStore = require("connect-mongodb-session") (session);
+console.log(MongoDBStore);
 const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/yelp-camp1";
 
 mongoose.connect(dbUrl, {
@@ -59,8 +59,6 @@ const store = new MongoDBStore ({
     secret,
     touchAfter: 24 * 60 * 60
 });
-
-console.log(dbUrl, store);
 
 store.on ("error", function (e) {
     console.log ("SESSION STORE ERROR", e)
